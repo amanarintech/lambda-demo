@@ -6,12 +6,15 @@ phases:
       python: 3.9
   pre_build:
     commands:
+      - echo Creating virtual environment...
+      - python -m venv venv
+      - source venv/bin/activate
       - echo Installing dependencies...
-      - pip install -r requirements.txt
+      - pip install -r requirements.txt || { echo "Dependency installation failed"; exit 1; }
   build:
     commands:
       - echo Running build process...
-      - python build_script.py
+      - python build_script.py || { echo "Build script failed"; exit 1; }
   post_build:
     commands:
       - echo Packaging the build files...
@@ -19,7 +22,7 @@ phases:
       - ZIP_NAME="deployment-package-$TIMESTAMP.zip"
       - zip -r $ZIP_NAME .
       - echo Uploading $ZIP_NAME to S3...
-      - aws s3 cp $ZIP_NAME s3://lamda-aman/
+      - aws s3 cp $ZIP_NAME s3://lamda-aman/ || { echo "Upload failed"; exit 1; }
 
 artifacts:
   files:
