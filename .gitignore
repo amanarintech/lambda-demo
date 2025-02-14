@@ -1,0 +1,29 @@
+# Ignore Python compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignore environment files
+.env
+.venv/
+venv/
+
+# Ignore dependency files
+*.egg-info/
+dist/
+build/
+
+# Ignore IDE/editor specific files
+.vscode/
+.idea/
+*.swp
+
+# Ignore AWS deployment files
+deployment-package-*.zip
+
+# Ignore AWS credentials (ensure you never commit them!)
+.aws/
+
+# Ignore log files
+*.log
