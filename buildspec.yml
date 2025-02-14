@@ -1,0 +1,26 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+  pre_build:
+    commands:
+      - echo Installing dependencies...
+      - pip install -r requirements.txt
+  build:
+    commands:
+      - echo Running build process...
+      - python build_script.py
+  post_build:
+    commands:
+      - echo Packaging the build files...
+      - TIMESTAMP=$(date +%Y%m%d%H%M%S)
+      - ZIP_NAME="deployment-package-$TIMESTAMP.zip"
+      - zip -r $ZIP_NAME .
+      - echo Uploading $ZIP_NAME to S3...
+      - aws s3 cp $ZIP_NAME s3://lamda-aman/
+
+artifacts:
+  files:
+    - deployment-package-*.zip
